@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Tailwind v4 defaults to prefers-color-scheme; we toggle theme with .dark on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Native inputs/date pickers follow dark theme (fixes invisible text) */
+  .dark {
+    color-scheme: dark;
+  }
+}

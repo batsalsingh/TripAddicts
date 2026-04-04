@@ -1,0 +1,7 @@
+{
+  "name": "TripAddicts",
+  "description": "Travel planning with maps, AI itineraries, weather-smart discover, and group expense splitting.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
