@@ -1,11 +1,28 @@
 import axios from 'axios';
 
-const envApiUrl = import.meta.env.VITE_API_URL?.trim();
-const API_URL = envApiUrl
-  ? envApiUrl.replace(/\/+$/, '')
-  : import.meta.env.PROD
-    ? 'https://tripaddicts.onrender.com/api'
-    : '/api';
+function normalizeApiUrl(rawUrl) {
+  const trimmed = rawUrl?.trim().replace(/\/+$/, '');
+  if (!trimmed) return '';
+
+  // For absolute URLs, auto-use /api when only the host is provided.
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      const url = new URL(trimmed);
+      const path = url.pathname.replace(/\/+$/, '');
+      if (!path || path === '/') {
+        url.pathname = '/api';
+      }
+      return url.toString().replace(/\/+$/, '');
+    } catch {
+      return trimmed;
+    }
+  }
+
+  return trimmed;
+}
+
+const envApiUrl = normalizeApiUrl(import.meta.env.VITE_API_URL);
+const API_URL = envApiUrl || (import.meta.env.PROD ? 'https://tripaddicts.onrender.com/api' : '/api');
 
 const api = axios.create({
   baseURL: API_URL,
